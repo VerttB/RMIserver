@@ -23,9 +23,10 @@ public class Cliente2 implements ChatClient{
             ChatServer stub = (ChatServer) registro.lookup("Chat");
             System.out.println("Qual o seu nome?");
             Cliente cliente2 = new Cliente(in.nextLine());
-
             ChatClient clienteStub = (ChatClient) UnicastRemoteObject.exportObject(cliente2, 0);
-            stub.adicionarCliente(cliente2);
+
+            stub.adicionarCliente(clienteStub);
+
             while (true){
                 stub.enviarMsg(cliente2.getNome(), in.nextLine());
                 System.out.print("\033[1A\033[2K");

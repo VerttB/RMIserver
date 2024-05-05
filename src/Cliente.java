@@ -19,25 +19,20 @@ public class Cliente implements ChatClient {
 
     public static void main(String[] args) {
         Scanner in = new Scanner(System.in);
-        String servidorIP = "192.168.168.25";
+
         try{
 
-            Registry registro = LocateRegistry.getRegistry(servidorIP, 1099);
+            Registry registro = LocateRegistry.getRegistry("localhost");
             ChatServer stub = (ChatServer) registro.lookup("Chat");
             System.out.println("Qual o seu nome?");
             Cliente cliente = new Cliente(in.nextLine());
-
-
             ChatClient clienteStub = (ChatClient) UnicastRemoteObject.exportObject(cliente, 0);
-
-            // Adiciona o cliente ao servidor
-            stub.adicionarCliente(cliente);
+            stub.adicionarCliente(clienteStub);
 
             while (true){
 
                 stub.enviarMsg(cliente.getNome(), in.nextLine());
-                System.out.println("\033[1A\033[K");
-                System.out.flush();
+                System.out.print("\033[1A\033[2K");
             }
         }
         catch (Exception e){
